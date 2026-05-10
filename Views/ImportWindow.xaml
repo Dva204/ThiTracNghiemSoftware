@@ -1,0 +1,128 @@
+<Window x:Class="TN.Views.ImportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Import - Premium Learning Platform" Height="700" Width="1000"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True"
+        Background="Transparent">
+    
+    <Border Background="#F4F7FB" CornerRadius="24" BorderBrush="{StaticResource BorderLight}" BorderThickness="1">
+        <Grid>
+            <!-- Background Decoration -->
+            <Border Background="{StaticResource HeaderNavy}" Height="220" VerticalAlignment="Top" CornerRadius="24,24,0,0">
+                <Grid>
+                    <TextBlock Text="MANAGEMENT CENTER" FontSize="12" Foreground="{StaticResource AccentCyan}" FontWeight="Bold" Margin="40,30,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    <Button x:Name="btnBack" Content="←" 
+                            HorizontalAlignment="Right" VerticalAlignment="Top"
+                            Width="40" Height="40" Margin="0,20,40,0"
+                            Foreground="White" FontSize="20" Background="Transparent" BorderThickness="0" 
+                            Cursor="Hand" Click="btnBack_Click" ToolTip="Quay lại"/>
+                </Grid>
+            </Border>
+
+            <!-- Main Content Card -->
+            <Border Width="650" Margin="0,80,0,30" Style="{StaticResource ModernCard}" CornerRadius="24">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="30,20">
+                        <TextBlock Text="UPLOAD &amp; MANAGE BANK" FontSize="26" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+                        <!-- Drag & Drop Zone -->
+                        <Border BorderBrush="{StaticResource AccentBlue}" BorderThickness="2" CornerRadius="18" Padding="30" Margin="0,0,0,20" Background="#F8FAFC">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="📄" FontSize="56" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                <TextBlock Text="Select a Word document (.docx)" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                                <Button x:Name="btnSelectFile" Content="CHOOSE FILE" Width="180" Height="45"
+                                        Background="{StaticResource AccentBlue}" Foreground="White" FontWeight="Bold"
+                                        BorderThickness="0" Cursor="Hand" Click="btnSelectFile_Click">
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="12"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Collection Selection & Management -->
+                        <Grid Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="MANAGEMENT &amp; SEARCH" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,5"/>
+                                <TextBox x:Name="txtSearch" Height="40" Margin="0,0,0,10" Padding="10,0" VerticalContentAlignment="Center" 
+                                         BorderBrush="{StaticResource BorderLight}" GotFocus="txtSearch_GotFocus" LostFocus="txtSearch_LostFocus"
+                                         TextChanged="txtSearch_TextChanged" Text="Search collections...">
+                                    <TextBox.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="10"/>
+                                        </Style>
+                                    </TextBox.Resources>
+                                </TextBox>
+                                
+                                <ComboBox x:Name="cboCollection" Height="45" FontSize="14" VerticalContentAlignment="Center" Background="White" BorderBrush="{StaticResource BorderLight}">
+                                    <ComboBox.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="10"/>
+                                        </Style>
+                                    </ComboBox.Resources>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Margin="10,21,0,0" Orientation="Horizontal">
+                                <Button x:Name="btnAddCategory" Content="+" Width="45" Height="45" Margin="0,0,5,0"
+                                        Background="{StaticResource AccentCyan}" Foreground="White" FontSize="24" FontWeight="Bold"
+                                        BorderThickness="0" Cursor="Hand" Click="btnAddCategory_Click" ToolTip="Thêm mới">
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="10"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                                
+                                <Button x:Name="btnRename" Content="✏️" Width="45" Height="45" Margin="0,0,5,0"
+                                        Background="#F1F5F9" Foreground="{StaticResource TextPrimary}" FontSize="18"
+                                        BorderThickness="0" Cursor="Hand" Click="btnRename_Click" ToolTip="Đổi tên">
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="10"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+
+                                <Button x:Name="btnDelete" Content="🗑️" Width="45" Height="45" 
+                                        Background="#FEE2E2" Foreground="{StaticResource DangerRed}" FontSize="18"
+                                        BorderThickness="0" Cursor="Hand" Click="btnDelete_Click" ToolTip="Xóa bộ đề">
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="10"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- New Category Panel -->
+                        <StackPanel x:Name="pnlNewCategory" Visibility="Collapsed" Margin="0,0,0,15">
+                            <TextBlock Text="NEW COLLECTION NAME" FontSize="11" FontWeight="Bold" Foreground="{StaticResource SuccessGreen}" Margin="0,0,0,5"/>
+                            <TextBox x:Name="txtNewCategory" Height="45" FontSize="14" VerticalContentAlignment="Center" Padding="10,0" BorderBrush="{StaticResource AccentCyan}">
+                                <TextBox.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="10"/>
+                                    </Style>
+                                </TextBox.Resources>
+                            </TextBox>
+                        </StackPanel>
+
+                        <!-- Status Section -->
+                        <Border x:Name="pnlStatus" Background="#F1F5F9" CornerRadius="14" Padding="15" Margin="0,10,0,0">
+                            <TextBlock x:Name="txtStatus" Text="Ready to import. Choose a valid .docx file to begin." 
+                                       Foreground="{StaticResource TextSecondary}" TextWrapping="Wrap" FontSize="13" TextAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

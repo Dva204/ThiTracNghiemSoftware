@@ -1,0 +1,64 @@
+<Window x:Class="TN.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Cài Đặt Hệ Thống" Height="450" Width="600"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize"
+        Background="#F4F7FA">
+    
+    <Border BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="12">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- HEADER -->
+            <Grid Grid.Row="0" Background="#FFFFFF" Height="60">
+                 <TextBlock Text="⚙️ TÙY CHỈNH HỆ THỐNG" FontWeight="Bold" FontSize="18" Foreground="#1E293B" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Consolas"/>
+            </Grid>
+
+            <!-- CONTENT -->
+            <StackPanel Grid.Row="1" Margin="40,30">
+                
+                <Border Background="#FFFFFF" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <Grid>
+                        <TextBlock Text="🔊 Âm thanh hệ thống (Cảnh báo, Đếm giờ)" FontSize="16" Foreground="#334155" VerticalAlignment="Center"/>
+                        <CheckBox x:Name="chkSound" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                            </CheckBox.LayoutTransform>
+                        </CheckBox>
+                    </Grid>
+                </Border>
+
+                <Border Background="#FFFFFF" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <Grid>
+                        <TextBlock Text="🌙 Giao diện Tối (Dark Mode)" FontSize="16" Foreground="#334155" VerticalAlignment="Center"/>
+                        <TextBlock Text="(Tính năng đang được phát triển)" FontSize="12" Foreground="#94A3B8" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,30,0"/>
+                        <CheckBox x:Name="chkDarkTheme" HorizontalAlignment="Right" VerticalAlignment="Center" IsEnabled="False">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                            </CheckBox.LayoutTransform>
+                        </CheckBox>
+                    </Grid>
+                </Border>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                    <TextBlock Text="Ghi chú: Tính năng giao diện đang được nhà mạng nâng cấp ở các phiên bản tiếp theo." FontSize="13" Foreground="#94A3B8" FontStyle="Italic"/>
+                </StackPanel>
+
+            </StackPanel>
+
+            <!-- BUTTONS -->
+            <Grid Grid.Row="2" Background="#FFFFFF" Height="70">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">
+                    <Button Content="Hủy bỏ" Width="100" Height="40" Margin="0,0,10,0" 
+                            Background="#F1F5F9" Foreground="#64748B" BorderThickness="0" Cursor="Hand" Click="BtnCancel_Click"/>
+                    <Button Content="Lưu Cài Đặt" Width="120" Height="40" 
+                            Background="#0072B5" Foreground="White" BorderThickness="0" Cursor="Hand" Click="BtnSave_Click"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
