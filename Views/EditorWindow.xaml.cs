@@ -8,6 +8,9 @@ using System.Windows.Controls;
 using TN.Models;
 using TN.Services;
 
+using System.Windows.Media.Imaging;
+using Microsoft.Win32;
+
 namespace TN.Views
 {
     public partial class EditorWindow : Window
@@ -15,6 +18,7 @@ namespace TN.Views
         private readonly StorageService _storageService = new();
         private ExamBank _currentBank = new();
         private string _currentFilePath = "";
+        private string? _selectedImagePath = null;
 
         public EditorWindow()
         {
@@ -148,7 +152,73 @@ namespace TN.Views
                 rbB.IsChecked = q.CorrectIndex == 2;
                 rbC.IsChecked = q.CorrectIndex == 3;
                 rbD.IsChecked = q.CorrectIndex == 4;
+
+                ShowImagePreview(q.ImagePath);
             }
+        }
+
+        private void ShowImagePreview(string? imagePath)
+        {
+            if (!string.IsNullOrEmpty(imagePath))
+            {
+                string fullPath = imagePath;
+                if (!Path.IsPathRooted(fullPath) && !string.IsNullOrEmpty(_currentFilePath))
+                {
+                    fullPath = Path.Combine(Path.GetDirectoryName(_currentFilePath)!, fullPath);
+                }
+
+                if (File.Exists(fullPath))
+                {
+                    try
+                    {
+                        _selectedImagePath = fullPath;
+                        txtImagePath.Text = Path.GetFileName(fullPath);
+                        
+                        var bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        bitmap.UriSource = new Uri(fullPath);
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.EndInit();
+                        
+                        imgPreview.Source = bitmap;
+                        pnlImagePreview.Visibility = Visibility.Visible;
+                        return;
+                    }
+                    catch { }
+                }
+            }
+            ClearImageUI();
+        }
+
+        private void ClearImageUI()
+        {
+            _selectedImagePath = null;
+            txtImagePath.Text = "No image selected";
+            imgPreview.Source = null;
+            pnlImagePreview.Visibility = Visibility.Collapsed;
+        }
+
+        private void btnBrowseImage_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog
+            {
+                Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                _selectedImagePath = dialog.FileName;
+                txtImagePath.Text = Path.GetFileName(_selectedImagePath);
+                
+                var bitmap = new BitmapImage(new Uri(_selectedImagePath));
+                imgPreview.Source = bitmap;
+                pnlImagePreview.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void btnClearImage_Click(object sender, RoutedEventArgs e)
+        {
+            ClearImageUI();
         }
 
         private void btnAddQuestion_Click(object sender, RoutedEventArgs e)
@@ -158,10 +228,17 @@ namespace TN.Views
             txtA.Text = ""; txtB.Text = ""; txtC.Text = ""; txtD.Text = "";
             rbA.IsChecked = true;
             lstQuestions.SelectedIndex = -1;
+            ClearImageUI();
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(_currentFilePath))
+            {
+                MessageBox.Show("Vui lòng chọn một bộ đề hiện có hoặc nhấn nút (+) để tạo bộ đề mới trước khi lưu câu hỏi!", "Thông báo");
+                return;
+            }
+
             if (string.IsNullOrWhiteSpace(txtQuestion.Text)) return;
 
             // Cập nhật tên bộ đề từ textbox
@@ -179,6 +256,35 @@ namespace TN.Views
             else if (rbB.IsChecked == true) q.CorrectIndex = 2;
             else if (rbC.IsChecked == true) q.CorrectIndex = 3;
             else if (rbD.IsChecked == true) q.CorrectIndex = 4;
+
+            // Xử lý lưu ảnh
+            if (!string.IsNullOrEmpty(_selectedImagePath))
+            {
+                try
+                {
+                    string bankDir = Path.GetDirectoryName(_currentFilePath)!;
+                    string mediaDir = Path.Combine(bankDir, "Media");
+                    if (!Directory.Exists(mediaDir)) Directory.CreateDirectory(mediaDir);
+
+                    string fileName = Path.GetFileName(_selectedImagePath);
+                    string targetPath = Path.Combine(mediaDir, fileName);
+
+                    if (Path.GetFullPath(_selectedImagePath) != Path.GetFullPath(targetPath))
+                    {
+                        File.Copy(_selectedImagePath, targetPath, true);
+                    }
+                    q.ImagePath = Path.Combine("Media", fileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Không thể lưu ảnh: " + ex.Message);
+                    q.ImagePath = null;
+                }
+            }
+            else
+            {
+                q.ImagePath = null;
+            }
 
             if (isNew) _currentBank.Questions.Add(q);
 

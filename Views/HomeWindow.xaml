@@ -70,7 +70,7 @@
                     <Border x:Name="bdPremiumBadge" Background="#FFD700" CornerRadius="4" Padding="6,2" Margin="10,0,0,0" VerticalAlignment="Center" Visibility="Collapsed">
                         <TextBlock Text="PRO" FontSize="10" FontWeight="Bold" Foreground="#000000"/>
                     </Border>
-                    <TextBlock Text="© 2024 DVA204" FontSize="10" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center" Margin="15,2,0,0"/>
+                    <TextBlock Text="© 2026 DVA204" FontSize="10" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center" Margin="15,2,0,0"/>
                     <Button x:Name="btnActivate" Content="GO PREMIUM" Margin="15,0,0,0" 
                             Background="Transparent" BorderBrush="{StaticResource AccentCyan}" Foreground="{StaticResource AccentCyan}"
                             BorderThickness="1" Padding="10,4" Cursor="Hand" Click="btnActivate_Click" VerticalAlignment="Center">

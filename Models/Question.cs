@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +11,6 @@ namespace TN.Models
         public string Text { get; set; } = "";
         public List<string> Options { get; set; } = new();
         public int CorrectIndex { get; set; }  // 1-based
+        public string? ImagePath { get; set; }
     }
 }

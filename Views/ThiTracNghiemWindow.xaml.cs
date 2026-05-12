@@ -336,6 +336,38 @@ namespace TN
             txtCurrentQIndex.Text = $"QUESTION {index + 1:D2}";
             txtQuestion.Text = q.Text;
 
+            // Hiển thị ảnh nếu có
+            if (!string.IsNullOrEmpty(q.ImagePath))
+            {
+                try
+                {
+                    string activeBankPath = _storageService.GetActiveBankPath();
+                    if (!string.IsNullOrEmpty(activeBankPath))
+                    {
+                        string bankDir = Path.GetDirectoryName(activeBankPath);
+                        string fullPath = Path.IsPathRooted(q.ImagePath) ? q.ImagePath : Path.Combine(bankDir, q.ImagePath);
+
+                        if (File.Exists(fullPath))
+                        {
+                            var bitmap = new BitmapImage();
+                            bitmap.BeginInit();
+                            bitmap.UriSource = new Uri(fullPath);
+                            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmap.EndInit();
+                            imgQuestion.Source = bitmap;
+                            pnlQuestionImage.Visibility = Visibility.Visible;
+                        }
+                        else { pnlQuestionImage.Visibility = Visibility.Collapsed; }
+                    }
+                    else { pnlQuestionImage.Visibility = Visibility.Collapsed; }
+                }
+                catch { pnlQuestionImage.Visibility = Visibility.Collapsed; }
+            }
+            else
+            {
+                pnlQuestionImage.Visibility = Visibility.Collapsed;
+            }
+
             // Gán đáp án vào Content để hiển thị
             rbA.Content = q.Options.Count > 0 ? q.Options[0] : "";
             rbB.Content = q.Options.Count > 1 ? q.Options[1] : "";
@@ -696,6 +728,33 @@ namespace TN
                     TextWrapping = TextWrapping.Wrap,
                     Margin = new Thickness(0, 6, 0, 6)
                 });
+
+                // Ảnh nếu có
+                if (!string.IsNullOrEmpty(q.ImagePath))
+                {
+                    try
+                    {
+                        string activeBankPath = _storageService.GetActiveBankPath();
+                        if (!string.IsNullOrEmpty(activeBankPath))
+                        {
+                            string bankDir = Path.GetDirectoryName(activeBankPath);
+                            string fullPath = Path.IsPathRooted(q.ImagePath) ? q.ImagePath : Path.Combine(bankDir, q.ImagePath);
+
+                            if (File.Exists(fullPath))
+                            {
+                                var img = new Image { MaxHeight = 150, HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 5, 0, 5) };
+                                var bitmap = new BitmapImage();
+                                bitmap.BeginInit();
+                                bitmap.UriSource = new Uri(fullPath);
+                                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                                bitmap.EndInit();
+                                img.Source = bitmap;
+                                sp.Children.Add(img);
+                            }
+                        }
+                    }
+                    catch { }
+                }
 
                 // Dòng 3: đáp án đúng (và đáp án sai nếu có)
                 string correctText = q.Options.Count >= q.CorrectIndex

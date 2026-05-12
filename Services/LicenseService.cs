@@ -1,6 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using System.IO;
 using TN.Models;
 
 namespace TN.Services
@@ -8,26 +9,21 @@ namespace TN.Services
     public class LicenseService
     {
         private readonly SettingsService _settingsService;
+        private const string SECRET_KEY = "dovanan250820004";
+        private const string MASTER_KEY = "TN-MASTER-FULL-ACCESS"; // Key toàn năng
 
         public LicenseService()
         {
             _settingsService = new SettingsService();
         }
 
-        /// <summary>
-        /// Kiểm tra xem người dùng có phải là Premium không
-        /// </summary>
         public bool IsPremiumUser()
         {
             var settings = SettingsService.Current;
             if (string.IsNullOrEmpty(settings.LicenseKey)) return false;
-
             return ValidateKey(settings.LicenseKey);
         }
 
-        /// <summary>
-        /// Kích hoạt bản quyền với mã Key
-        /// </summary>
         public bool Activate(string key)
         {
             if (ValidateKey(key))
@@ -42,72 +38,66 @@ namespace TN.Services
         }
 
         /// <summary>
-        /// Thuật toán kiểm tra Key Offline
-        /// Cấu trúc: TN-PRM-XXXX-YYYY
-        /// YYYY phải là mã hóa đơn giản của XXXX + DeviceId
+        /// Lấy mã định danh duy nhất của máy tính (Hardware ID)
         /// </summary>
+        public string GetDeviceId()
+        {
+            try
+            {
+                // Kết hợp các thông tin cố định của máy
+                string raw = Environment.MachineName + 
+                             Environment.ProcessorCount + 
+                             Environment.UserName + 
+                             System.Runtime.InteropServices.RuntimeInformation.OSArchitecture;
+                
+                return GetHash(raw).Substring(0, 8).ToUpper();
+            }
+            catch
+            {
+                return "ERR-DEVICE-ID";
+            }
+        }
+
         public bool ValidateKey(string key)
         {
             if (string.IsNullOrEmpty(key)) return false;
 
-            // MASTER KEY để bạn test nhanh
-            if (key == "TN-UNLOCK-MASTER") return true;
+            // 1. Kiểm tra Key Toàn Năng (Master Key)
+            if (key.Trim() == MASTER_KEY) return true;
 
-            if (!key.StartsWith("TN-PRM-"))
-            {
-                System.Windows.MessageBox.Show("Mã Key phải bắt đầu bằng: TN-PRM-");
-                return false;
-            }
+            // 2. Kiểm tra định dạng TN-PRM-XXXX-YYYY
+            string[] parts = key.Split('-');
+            if (parts.Length != 4) return false;
 
-            try
-            {
-                string[] parts = key.Split('-');
-                if (parts.Length != 4)
-                {
-                    System.Windows.MessageBox.Show("Mã Key phải có dạng: TN-PRM-XXXX-YYYY");
-                    return false;
-                }
+            string randomPart = parts[2]; // XXXX
+            string checksumPart = parts[3]; // YYYY
 
-                string randomPart = parts[2]; // XXXX
-                string checksumPart = parts[3]; // YYYY
+            // 3. Logic kiểm tra HWID gắn trong Key
+            string deviceId = GetDeviceId();
+            string expectedHash = GenerateChecksum(deviceId, randomPart);
 
-                // Thuật toán kiểm tra đơn giản: Hash(XXXX + Secret) lấy 4 ký tự cuối
-                string secret = "TN_SECRET_2024";
-                string combined = randomPart + secret;
-                
-                using (SHA256 sha256 = SHA256.Create())
-                {
-                    byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(combined));
-                    string hash = BitConverter.ToString(bytes).Replace("-", "").Substring(0, 4);
-                    
-                    if (!hash.Equals(checksumPart, StringComparison.OrdinalIgnoreCase))
-                    {
-                        System.Windows.MessageBox.Show($"Debug: Expected {hash}, got {checksumPart}");
-                    }
-
-                    return hash.Equals(checksumPart, StringComparison.OrdinalIgnoreCase);
-                }
-            }
-            catch
-            {
-                return false;
-            }
+            return checksumPart.Equals(expectedHash, StringComparison.OrdinalIgnoreCase);
         }
 
-        /// <summary>
-        /// Tạo một Key hợp lệ (Dành cho Admin/Bạn để cấp cho người dùng)
-        /// </summary>
-        public string GenerateKey()
+        public string GenerateKeyFromDeviceId(string deviceId)
         {
             string randomPart = Guid.NewGuid().ToString().Substring(0, 4).ToUpper();
-            string secret = "TN_SECRET_2024";
-            string combined = randomPart + secret;
+            string checksum = GenerateChecksum(deviceId, randomPart);
+            return $"TN-PRM-{randomPart}-{checksum}";
+        }
 
+        private string GenerateChecksum(string deviceId, string randomPart)
+        {
+            string combined = deviceId + randomPart + SECRET_KEY;
+            return GetHash(combined).Substring(0, 6).ToUpper();
+        }
+
+        private string GetHash(string input)
+        {
             using (SHA256 sha256 = SHA256.Create())
             {
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(combined));
-                string hash = BitConverter.ToString(bytes).Replace("-", "").Substring(0, 4);
-                return $"TN-PRM-{randomPart}-{hash}";
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(input));
+                return BitConverter.ToString(bytes).Replace("-", "");
             }
         }
     }

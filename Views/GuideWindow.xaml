@@ -57,7 +57,7 @@
                                             <TextBlock Text="BẢN FREE (MIỄN PHÍ)" FontWeight="Bold" Foreground="{StaticResource AccentBlue}" Margin="0,0,0,5"/>
                                             <TextBlock Text="• Tối đa 3 bộ sưu tập." TextWrapping="Wrap"/>
                                             <TextBlock Text="• Tối đa 5 file trong mỗi bộ sưu tập." TextWrapping="Wrap"/>
-                                            <TextBlock Text="• Giới hạn 60 câu mỗi đề thi." TextWrapping="Wrap"/>
+                                            <TextBlock Text="• Giới hạn 60 câu mỗi đề thi." TextWrapping="Wrap" Height="50"/>
                                         </StackPanel>
                                     </Border>
                                 </StackPanel>
@@ -66,7 +66,7 @@
                                         <StackPanel>
                                             <TextBlock Text="BẢN PREMIUM (PRO)" FontWeight="Bold" Foreground="{StaticResource DangerRed}" Margin="0,0,0,5"/>
                                             <TextBlock Text="• Không giới hạn bộ sưu tập &amp; file." TextWrapping="Wrap"/>
-                                            <TextBlock Text="• Truy cập Smart Question Builder." TextWrapping="Wrap"/>
+                                            <TextBlock Text="• Truy cập Smart Question Builder. (Bao gồm cả thêm câu hỏi có Hình ảnh)" TextWrapping="Wrap"/>
                                             <TextBlock Text="• Không giới hạn số câu mỗi đề thi." TextWrapping="Wrap"/>
                                             <TextBlock Text="• Quyền xóa bộ đề &amp; chỉnh sửa vĩnh viễn." TextWrapping="Wrap"/>
                                         </StackPanel>

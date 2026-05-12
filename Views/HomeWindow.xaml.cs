@@ -100,23 +100,40 @@ namespace TN.Views
 
         private void btnActivate_Click(object sender, RoutedEventArgs e)
         {
-            // Popup nhập Key đơn giản
-            string key = Microsoft.VisualBasic.Interaction.InputBox(
-                "Vui lòng nhập License Key để kích hoạt bản Premium:", 
-                "Kích hoạt Premium", "");
+            string deviceId = _licenseService.GetDeviceId();
+            
+            // Hiển thị thông tin hướng dẫn trước
+            string infoMsg = $"💎 NÂNG CẤP BẢN PREMIUM\n\n" +
+                             $"Mã máy của bạn: {deviceId}\n" +
+                             $"Liên hệ Zalo: 0386137558 để nhận mã kích hoạt.\n\n" +
+                             $"Nhấn OK để tiếp tục nhập mã kích hoạt.";
 
-            if (string.IsNullOrEmpty(key)) return;
+            var result = MessageBox.Show(infoMsg, "Kích hoạt Premium", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            
+            if (result == MessageBoxResult.OK)
+            {
+                // Popup nhập Key 
+                string key = Microsoft.VisualBasic.Interaction.InputBox(
+                    "Nhập mã kích hoạt (License Key) bạn đã nhận được:", 
+                    "Kích hoạt Premium", "");
 
-            if (_licenseService.Activate(key))
-            {
-                MessageBox.Show("Chúc mừng! Bạn đã kích hoạt bản Premium thành công.", "Thành công", 
-                                MessageBoxButton.OK, MessageBoxImage.Information);
-                CheckLicense();
-            }
-            else
-            {
-                MessageBox.Show("License Key không hợp lệ. Vui lòng kiểm tra lại.", "Lỗi", 
-                                MessageBoxButton.OK, MessageBoxImage.Error);
+                if (string.IsNullOrEmpty(key)) return;
+
+                if (_licenseService.Activate(key))
+                {
+                    MessageBox.Show("Chúc mừng! Bạn đã nâng cấp lên bản Premium thành công.", "Thành công", 
+                                    MessageBoxButton.OK, MessageBoxImage.Information);
+                    CheckLicense();
+                }
+                else
+                {
+                    string errorMsg = "Mã kích hoạt không đúng hoặc không dành cho máy này.\n\n" +
+                                     $"Mã máy hiện tại: {deviceId}\n" +
+                                     "Vui lòng liên hệ Zalo: 0386137558 để được hỗ trợ!";
+                                     
+                    MessageBox.Show(errorMsg, "Lỗi kích hoạt", 
+                                    MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 

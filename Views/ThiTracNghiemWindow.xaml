@@ -232,6 +232,11 @@
                             <TextBlock x:Name="txtCurrentQIndex" Text="QUESTION 01" FontSize="13" FontWeight="Bold" Foreground="{StaticResource AccentBlue}" Margin="0,0,0,10"/>
                             <TextBlock x:Name="txtQuestion" Text="This is a sample question text for the exam window? It should be readable and clean." 
                                        FontSize="22" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" TextWrapping="Wrap" LineHeight="32"/>
+                            
+                            <!-- Question Image -->
+                            <Border x:Name="pnlQuestionImage" Visibility="Collapsed" Margin="0,20,0,0" CornerRadius="12" BorderBrush="{StaticResource BorderLight}" BorderThickness="1" Background="White" Padding="10" HorizontalAlignment="Left">
+                                <Image x:Name="imgQuestion" MaxHeight="350" Stretch="Uniform"/>
+                            </Border>
                         </StackPanel>
 
                         <!-- Answer Area -->

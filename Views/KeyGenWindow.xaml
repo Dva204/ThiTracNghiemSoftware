@@ -1,0 +1,51 @@
+<Window x:Class="TN.Views.KeyGenWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Admin - License Key Generator" Height="450" Width="600"
+        WindowStartupLocation="CenterScreen" Background="#F1F5F9"
+        WindowStyle="None" AllowsTransparency="True">
+
+    <Border Background="White" CornerRadius="20" BorderBrush="#E2E8F0" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Border Background="#1E293B" CornerRadius="20,20,0,0">
+                <Grid Margin="20,0">
+                    <TextBlock Text="ADMIN KEY GENERATOR" Foreground="White" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <Button Content="✕" HorizontalAlignment="Right" Foreground="White" Background="Transparent" BorderThickness="0" Click="Close_Click" Cursor="Hand"/>
+                </Grid>
+            </Border>
+
+            <!-- Body -->
+            <StackPanel Grid.Row="1" Margin="30">
+                <TextBlock Text="1. ENTER CUSTOMER DEVICE ID" FontWeight="Bold" Margin="0,0,0,10" Foreground="#64748B"/>
+                <TextBox x:Name="txtDeviceId" Height="45" VerticalContentAlignment="Center" Padding="15,0" Margin="0,0,0,20" BorderBrush="#CBD5E1">
+                    <TextBox.Resources>
+                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
+                    </TextBox.Resources>
+                </TextBox>
+
+                <Button x:Name="btnGenerate" Content="GENERATE PREMIUM KEY" Height="50" Background="#0F172A" Foreground="White" FontWeight="Bold" Click="btnGenerate_Click" Cursor="Hand">
+                    <Button.Resources>
+                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="10"/></Style>
+                    </Button.Resources>
+                </Button>
+
+                <Separator Margin="0,30" Background="#E2E8F0"/>
+
+                <TextBlock Text="RESULT KEY" FontWeight="Bold" Margin="0,0,0,10" Foreground="#64748B"/>
+                <TextBox x:Name="txtResultKey" Height="45" IsReadOnly="True" Background="#F8FAFC" VerticalContentAlignment="Center" Padding="15,0" FontWeight="Bold" Foreground="#0F172A">
+                    <TextBox.Resources>
+                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
+                    </TextBox.Resources>
+                </TextBox>
+                
+                <TextBlock Text="Note: Copy this key and send it to your customer." FontSize="11" Foreground="#94A3B8" Margin="0,5,0,0"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
