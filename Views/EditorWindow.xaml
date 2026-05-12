@@ -16,12 +16,13 @@
             <Border Background="{StaticResource HeaderNavy}" CornerRadius="20,20,0,0">
                 <Grid Margin="25,0">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="btnBack" Content="← HOME" Click="btnBack_Click" Background="Transparent" Foreground="White" BorderThickness="0" Cursor="Hand" Margin="0,0,15,0"/>
+                        <Rectangle Width="1" Height="20" Fill="#475569" Margin="15,0"/>
                         <TextBlock Text="PRO EDITOR" FontSize="10" FontWeight="Bold" Foreground="{StaticResource AccentCyan}" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                        <TextBlock Text="Smart Question Builder" FontSize="20" Foreground="White" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock Text="Smart Question Builder" FontSize="18" Foreground="White" FontWeight="Bold" VerticalAlignment="Center"/>
                     </StackPanel>
                     
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button x:Name="btnBack" Content="←" Width="40" Height="40" Margin="0,0,10,0" Foreground="White" Background="Transparent" BorderThickness="0" Cursor="Hand" Click="btnBack_Click"/>
                         <Button x:Name="btnClose" Content="✕" Width="40" Height="40" Foreground="White" Background="Transparent" BorderThickness="0" Cursor="Hand" Click="btnClose_Click"/>
                     </StackPanel>
                 </Grid>
@@ -154,19 +155,38 @@
                                 <RadioButton x:Name="rbD" GroupName="Correct" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 <TextBox x:Name="txtD" Grid.Column="1" Height="40" VerticalContentAlignment="Center" Padding="10,0" BorderBrush="{StaticResource BorderLight}" Tag="D"/>
                             </Grid>
-
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
                                 <Button x:Name="btnDeleteQuestion" Content="DELETE" Width="120" Height="45" Margin="0,0,15,0"
                                         Background="#FEE2E2" Foreground="{StaticResource DangerRed}" FontWeight="Bold" 
-                                        BorderThickness="0" Cursor="Hand" Click="btnDeleteQuestion_Click"/>
-                                
-                                <Button x:Name="btnSave" Content="SAVE CHANGES" Width="180" Height="45"
-                                        Background="{StaticResource HeaderNavy}" Foreground="White" FontWeight="Bold" 
-                                        BorderThickness="0" Cursor="Hand" Click="btnSave_Click">
+                                        BorderThickness="0" Cursor="Hand" Click="btnDeleteQuestion_Click">
                                     <Button.Resources>
-                                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="10"/></Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="10"/>
+                                        </Style>
                                     </Button.Resources>
                                 </Button>
+
+                                <StackPanel>
+                                    <Button x:Name="btnSave" Content="SAVE CHANGES" Width="180" Height="45"
+                                            Background="{StaticResource HeaderNavy}" Foreground="White" FontWeight="Bold" 
+                                            BorderThickness="0" Cursor="Hand" Click="btnSave_Click">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="10"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+
+                                    <Button x:Name="btnSaveExam" Content="SAVE EXAM &amp; FINISH" Width="180" Height="36" Margin="0,10,0,0"
+                                            Background="#334155" Foreground="White" FontSize="11" 
+                                            BorderThickness="0" Cursor="Hand" Click="btnBackToImport_Click">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="8"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+                                </StackPanel>
                             </StackPanel>
                         </StackPanel>
                     </ScrollViewer>

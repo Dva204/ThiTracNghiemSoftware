@@ -67,13 +67,17 @@
                         <TextBlock Text="🎓" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <TextBlock Text="ANEDUCATION" FontWeight="Bold" FontSize="18" Foreground="{StaticResource TextPrimary}" VerticalAlignment="Center"/>
+                    
                     <Border x:Name="bdPremiumBadge" Background="#FFD700" CornerRadius="4" Padding="6,2" Margin="10,0,0,0" VerticalAlignment="Center" Visibility="Collapsed">
                         <TextBlock Text="PRO" FontSize="10" FontWeight="Bold" Foreground="#000000"/>
                     </Border>
-                    <TextBlock Text="© 2026 DVA204" FontSize="10" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center" Margin="15,2,0,0"/>
+                    
+                    <StackPanel x:Name="pnlPromotion" Orientation="Horizontal" Margin="20,0,15,0" Visibility="Visible">
+                    </StackPanel>
+                    
                     <Button x:Name="btnActivate" Content="GO PREMIUM" Margin="15,0,0,0" 
-                            Background="Transparent" BorderBrush="{StaticResource AccentCyan}" Foreground="{StaticResource AccentCyan}"
-                            BorderThickness="1" Padding="10,4" Cursor="Hand" Click="btnActivate_Click" VerticalAlignment="Center">
+                            Background="{StaticResource AccentBlue}" Foreground="White"
+                            BorderThickness="0" Padding="15,6" Cursor="Hand" Click="btnActivate_Click" VerticalAlignment="Center">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="8"/>
@@ -107,8 +111,8 @@
                     <StackPanel>
                         <TextBlock Text="Welcome back" FontSize="14" Foreground="{StaticResource AccentCyan}" FontWeight="Bold" Margin="0,0,0,10"/>
                         <TextBlock Text="READY FOR YOUR NEXT GOAL?" Style="{StaticResource HeadingLarge}" Foreground="White" Margin="0,0,0,15"/>
-                        <TextBlock Text="Track your progress and practice with our professional and smart technical question banks." 
-                                   Style="{StaticResource SubtitleSoft}" Foreground="#94A3B8" MaxWidth="600" HorizontalAlignment="Left"/>
+                        <TextBlock Text="Track your progress and practice with our professional and smart technical question." 
+                                   Style="{StaticResource SubtitleSoft}" Foreground="#94A3B8" MaxWidth="600" HorizontalAlignment="Left" Height="62"/>
                     </StackPanel>
                     <Image HorizontalAlignment="Right" Width="200" Opacity="0.1" Source="https://cdn-icons-png.flaticon.com/512/2436/2436636.png"/>
                 </Grid>

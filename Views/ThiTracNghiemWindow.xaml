@@ -227,25 +227,28 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <!-- Question Header -->
-                        <StackPanel Grid.Row="0" Margin="0,0,0,30">
-                            <TextBlock x:Name="txtCurrentQIndex" Text="QUESTION 01" FontSize="13" FontWeight="Bold" Foreground="{StaticResource AccentBlue}" Margin="0,0,0,10"/>
-                            <TextBlock x:Name="txtQuestion" Text="This is a sample question text for the exam window? It should be readable and clean." 
-                                       FontSize="22" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" TextWrapping="Wrap" LineHeight="32"/>
-                            
-                            <!-- Question Image -->
-                            <Border x:Name="pnlQuestionImage" Visibility="Collapsed" Margin="0,20,0,0" CornerRadius="12" BorderBrush="{StaticResource BorderLight}" BorderThickness="1" Background="White" Padding="10" HorizontalAlignment="Left">
-                                <Image x:Name="imgQuestion" MaxHeight="350" Stretch="Uniform"/>
-                            </Border>
-                        </StackPanel>
+                        <!-- Main Exam Content (Scrollable) -->
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="0,0,15,0">
+                            <StackPanel>
+                                <!-- Question Header (Inside scroll to allow scrolling past large images) -->
+                                <StackPanel Margin="0,0,0,30">
+                                    <TextBlock x:Name="txtCurrentQIndex" Text="QUESTION 01" FontSize="13" FontWeight="Bold" Foreground="{StaticResource AccentBlue}" Margin="0,0,0,10"/>
+                                    <TextBlock x:Name="txtQuestion" Text="Question text..." 
+                                               FontSize="22" FontWeight="Bold" Foreground="{StaticResource TextPrimary}" TextWrapping="Wrap" LineHeight="32"/>
 
-                        <!-- Answer Area -->
-                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                            <StackPanel x:Name="spAnswers">
-                                <RadioButton x:Name="rbA" Content="First sample option for the user to select." Style="{StaticResource AnswerCardStyle}" Checked="OnAnswerChecked"/>
-                                <RadioButton x:Name="rbB" Content="Second choice that might be longer to see if it wraps correctly." Style="{StaticResource AnswerCardStyle}" Checked="OnAnswerChecked"/>
-                                <RadioButton x:Name="rbC" Content="Third possible answer for selection." Style="{StaticResource AnswerCardStyle}" Checked="OnAnswerChecked"/>
-                                <RadioButton x:Name="rbD" Content="The last and sometimes best answer." Style="{StaticResource AnswerCardStyle}" Checked="OnAnswerChecked"/>
+                                    <!-- Question Image -->
+                                    <Border x:Name="pnlQuestionImage" Visibility="Collapsed" Margin="0,20,0,0" CornerRadius="12" BorderBrush="{StaticResource BorderLight}" BorderThickness="1" Background="White" Padding="10" HorizontalAlignment="Left">
+                                        <Image x:Name="imgQuestion" MaxHeight="600" Stretch="Uniform"/>
+                                    </Border>
+                                </StackPanel>
+
+                                <!-- Answer Area -->
+                                <StackPanel x:Name="spAnswers">
+                                    <RadioButton x:Name="rbA" Content="Option A" Style="{StaticResource AnswerCardStyle}" Checked="OnAnswerChecked"/>
+                                    <RadioButton x:Name="rbB" Content="Option B" Style="{StaticResource AnswerCardStyle}" Checked="OnAnswerChecked"/>
+                                    <RadioButton x:Name="rbC" Content="Option C" Style="{StaticResource AnswerCardStyle}" Checked="OnAnswerChecked"/>
+                                    <RadioButton x:Name="rbD" Content="Option D" Style="{StaticResource AnswerCardStyle}" Checked="OnAnswerChecked"/>
+                                </StackPanel>
                             </StackPanel>
                         </ScrollViewer>
 
@@ -334,5 +337,15 @@
                 </Border>
             </StackPanel>
         </Grid>
+
+        <!-- Bottom Status Bar / Premium Nudge -->
+        <Border x:Name="pnlFreeLimitHint" Grid.Row="2" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="0,1,0,0" Height="28" Visibility="Collapsed">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0">
+                <TextBlock Text="💡" Margin="0,0,5,0" FontSize="10" VerticalAlignment="Center"/>
+                <TextBlock Text="Bản FREE giới hạn 60 câu. " Foreground="#64748B" FontSize="11" VerticalAlignment="Center"/>
+                <TextBlock Text="Nâng cấp PREMIUM" Foreground="#0072B5" FontWeight="Bold" FontSize="11" Cursor="Hand" TextDecorations="Underline" MouseLeftButtonDown="BtnUpgrade_Click" VerticalAlignment="Center"/>
+                <TextBlock Text=" để mở khóa vĩnh viễn." Foreground="#64748B" FontSize="11" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>

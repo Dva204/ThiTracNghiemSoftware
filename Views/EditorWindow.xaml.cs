@@ -224,7 +224,7 @@ namespace TN.Views
         private void btnAddQuestion_Click(object sender, RoutedEventArgs e)
         {
             pnlForm.Visibility = Visibility.Visible;
-            txtQuestion.Text = "Câu hỏi mới...";
+            txtQuestion.Text = ""; // Để trống hoàn toàn để nhập luôn
             txtA.Text = ""; txtB.Text = ""; txtC.Text = ""; txtD.Text = "";
             rbA.IsChecked = true;
             lstQuestions.SelectedIndex = -1;
@@ -298,7 +298,9 @@ namespace TN.Views
             cboBanks.SelectedValue = currentFileName;
 
             LoadBank();
-            MessageBox.Show("Đã lưu bộ đề thành công!", "Thông báo");
+            
+            // Tự động chuẩn bị form cho câu hỏi mới tiếp theo
+            btnAddQuestion_Click(null, null);
         }
 
         private void btnDeleteQuestion_Click(object sender, RoutedEventArgs e)
@@ -337,6 +339,16 @@ namespace TN.Views
         {
             var home = new HomeWindow();
             home.Show();
+            this.Close();
+        }
+
+        private void btnBackToImport_Click(object sender, RoutedEventArgs e)
+        {
+            // Lưu lần cuối trước khi thoát
+            SaveToFile();
+            
+            var import = new ImportWindow();
+            import.Show();
             this.Close();
         }
 

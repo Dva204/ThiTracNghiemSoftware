@@ -25,6 +25,7 @@ namespace TN.Views
             bool isPremium = _licenseService.IsPremiumUser();
             bdPremiumBadge.Visibility = isPremium ? Visibility.Visible : Visibility.Collapsed;
             btnActivate.Visibility = isPremium ? Visibility.Collapsed : Visibility.Visible;
+            pnlPromotion.Visibility = isPremium ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void LoadDashboardStats()
@@ -102,13 +103,15 @@ namespace TN.Views
         {
             string deviceId = _licenseService.GetDeviceId();
             
-            // Hiển thị thông tin hướng dẫn trước
-            string infoMsg = $"💎 NÂNG CẤP BẢN PREMIUM\n\n" +
+            // Hiển thị thông tin hướng dẫn và ƯU ĐÃI
+            string infoMsg = $"💎 NÂNG CẤP BẢN PREMIUM (VĨNH VIỄN)\n\n" +
+                             $"🎁 ƯU ĐÃI ĐẶC BIỆT: 99.000 VNĐ\n" +
+                             $"   (Giá gốc: 350.000 VNĐ - Tiết kiệm 72%)\n\n" +
                              $"Mã máy của bạn: {deviceId}\n" +
                              $"Liên hệ Zalo: 0386137558 để nhận mã kích hoạt.\n\n" +
                              $"Nhấn OK để tiếp tục nhập mã kích hoạt.";
 
-            var result = MessageBox.Show(infoMsg, "Kích hoạt Premium", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            var result = MessageBox.Show(infoMsg, "Ưu đãi Premium", MessageBoxButton.OKCancel, MessageBoxImage.Information);
             
             if (result == MessageBoxResult.OK)
             {

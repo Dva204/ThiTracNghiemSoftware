@@ -51,6 +51,9 @@ namespace TN
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            // 0. Kiểm tra bản quyền để hiện Banner
+            UpdateFreeLimitBanner();
+
             // 1. Load danh sách môn học (thư mục con)
             var categories = _storageService.GetCategories();
             cboCategories.ItemsSource = categories;
@@ -149,8 +152,7 @@ namespace TN
                         if (!_licenseService.IsPremiumUser() && _allQuestions.Count > 60)
                         {
                             _allQuestions = _allQuestions.Take(60).ToList();
-                            MessageBox.Show("Phiên bản FREE chỉ hỗ trợ đọc tối đa 60 câu hỏi từ file Word.\n\nHãy nâng cấp bản quyền PREMIUM để mở khóa giới hạn này!", 
-                                            "Giới hạn phiên bản FREE", MessageBoxButton.OK, MessageBoxImage.Information);
+                            pnlFreeLimitHint.Visibility = Visibility.Visible;
                         }
                     }
                     ValidateSetup(); 
@@ -867,5 +869,21 @@ namespace TN
 
 
 
+        private void UpdateFreeLimitBanner()
+        {
+            if (pnlFreeLimitHint != null)
+            {
+                pnlFreeLimitHint.Visibility = _licenseService.IsPremiumUser() ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+
+        private void BtnUpgrade_Click(object sender, MouseButtonEventArgs e)
+        {
+            var settingsWindow = new SettingsWindow();
+            settingsWindow.ShowDialog();
+            
+            // Re-check after closing settings
+            UpdateFreeLimitBanner();
+        }
     }
 }

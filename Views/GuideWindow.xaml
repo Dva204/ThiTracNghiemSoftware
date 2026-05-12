@@ -29,16 +29,42 @@
                             <StackPanel>
                                 <TextBlock Text="1. CÁCH FORMAT ĐỀ (WORD DOCUMENT)" FontSize="18" FontWeight="Bold" Foreground="{StaticResource HeaderNavy}" Margin="0,0,0,10"/>
                                 <TextBlock Text="Để phần mềm nhận diện đúng câu hỏi, bạn cần format file .docx theo quy tắc sau:" TextWrapping="Wrap" Foreground="{StaticResource TextPrimary}" Margin="0,0,0,10"/>
-                                <Border Background="White" BorderBrush="{StaticResource BorderLight}" BorderThickness="1" Padding="15" CornerRadius="8">
-                                    <TextBlock FontFamily="Consolas" FontSize="13" LineHeight="20">
-                                        Câu hỏi: Nội dung câu hỏi kết thúc bằng dấu <Run FontWeight="Bold" Foreground="Red">#</Run><LineBreak/>
-                                        Đáp án 1: a. Nội dung kết thúc bằng dấu <Run FontWeight="Bold" Foreground="Red">#</Run><LineBreak/>
-                                        Đáp án 2: b. Nội dung kết thúc bằng dấu <Run FontWeight="Bold" Foreground="Red">#</Run><LineBreak/>
-                                        Đáp án 3: c. Nội dung kết thúc bằng dấu <Run FontWeight="Bold" Foreground="Red">#</Run><LineBreak/>
-                                        Đáp án 4: d. Nội dung kết thúc bằng dấu <Run FontWeight="Bold" Foreground="Red">#</Run><LineBreak/>
-                                        Số thứ tự đáp án đúng (1-4) kết thúc bằng dấu <Run FontWeight="Bold" Foreground="Red">#</Run><LineBreak/>
-                                        <Run Foreground="Gray">// Có thể thêm $DỄ#, $TRUNG BÌNH# hoặc $KHÓ# ở trên câu hỏi</Run>
-                                    </TextBlock>
+                                <Border Background="#F8FAFC" CornerRadius="12" Padding="20" BorderBrush="#E2E8F0" BorderThickness="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Quy tắc (Trái) -->
+                                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                            <TextBlock Text="Câu hỏi: Nội dung câu hỏi kết thúc bằng dấu #" Foreground="#475569" Margin="0,0,0,5"/>
+                                            <TextBlock Text="Đáp án 1: a. Nội dung kết thúc bằng dấu #" Foreground="#475569" Margin="0,0,0,5"/>
+                                            <TextBlock Text="Đáp án 2: b. Nội dung kết thúc bằng dấu #" Foreground="#475569" Margin="0,0,0,5"/>
+                                            <TextBlock Text="Đáp án 3: c. Nội dung kết thúc bằng dấu #" Foreground="#475569" Margin="0,0,0,5"/>
+                                            <TextBlock Text="Đáp án 4: d. Nội dung kết thúc bằng dấu #" Foreground="#475569" Margin="0,0,0,5"/>
+                                            <TextBlock Text="Số thứ tự đáp án đúng (1-4) kết thúc bằng dấu #" Foreground="#475569" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        </StackPanel>
+
+                                        <!-- Đường kẻ phân cách -->
+                                        <Border Grid.Column="1" Width="1" Background="#E2E8F0" Margin="20,0"/>
+
+                                        <!-- Ví dụ (Phải) -->
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                            <TextBlock Text="VÍ DỤ THỰC TẾ:" FontWeight="Bold" Foreground="{StaticResource AccentBlue}" Margin="0,0,0,10"/>
+                                            <Border Background="White" Padding="15" CornerRadius="8" BorderBrush="#CBD5E1" BorderThickness="1">
+                                                <TextBlock FontFamily="Consolas" FontSize="12" LineHeight="20">
+                                                    Thành phần nào chịu trách nhiệm phát sóng radar? #<LineBreak/>
+                                                    a. Anten #<LineBreak/>
+                                                    b. CPU #<LineBreak/>
+                                                    c. Nguồn điện #<LineBreak/>
+                                                    d. Màn hình #<LineBreak/>
+                                                    1 #
+                                                </TextBlock>
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
                                 </Border>
                             </StackPanel>
                         </Border>
@@ -64,7 +90,7 @@
                                 <StackPanel Grid.Column="1" Margin="10,0,0,0">
                                     <Border Background="#FDF2F2" Padding="15" CornerRadius="10" BorderBrush="#FECACA" BorderThickness="1">
                                         <StackPanel>
-                                            <TextBlock Text="BẢN PREMIUM (PRO)" FontWeight="Bold" Foreground="{StaticResource DangerRed}" Margin="0,0,0,5"/>
+                                            <TextBlock Text="BẢN PREMIUM (99.000 VNĐ)" FontWeight="Bold" Foreground="{StaticResource DangerRed}" Margin="0,0,0,5"/>
                                             <TextBlock Text="• Không giới hạn bộ sưu tập &amp; file." TextWrapping="Wrap"/>
                                             <TextBlock Text="• Truy cập Smart Question Builder. (Bao gồm cả thêm câu hỏi có Hình ảnh)" TextWrapping="Wrap"/>
                                             <TextBlock Text="• Không giới hạn số câu mỗi đề thi." TextWrapping="Wrap"/>
