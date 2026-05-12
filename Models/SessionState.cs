@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +10,7 @@ namespace TN.Models
     {
         public List<Question> ExamQuestions { get; set; } = new();
         public Dictionary<int, int> UserAnswers { get; set; } = new();
+        public HashSet<int> FlaggedQuestions { get; set; } = new();
         public int CurrentIndex { get; set; }
         
         // Cố tình dùng string cho dễ lưu JSON thay vì Enum

@@ -143,7 +143,7 @@
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Grid.Column="0" Margin="0,0,10,0">
                                         <TextBlock Text="2. QUESTION COUNT" FontSize="12" FontWeight="Bold" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,15"/>
-                                        <TextBox x:Name="txtTotalQuestions" Text="40" Height="45" FontSize="16" VerticalContentAlignment="Center" Padding="15,0" BorderBrush="{StaticResource BorderLight}">
+                                        <TextBox x:Name="txtTotalQuestions" Text="40" Height="45" FontSize="16" VerticalContentAlignment="Center" Padding="15,0" BorderBrush="{StaticResource BorderLight}" TextChanged="OnSettingChanged">
                                             <TextBox.Resources>
                                                 <Style TargetType="Border">
                                                     <Setter Property="CornerRadius" Value="10"/>
@@ -154,7 +154,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Margin="10,0,0,0">
                                         <TextBlock Text="3. TIME LIMIT (MINUTES)" FontSize="12" FontWeight="Bold" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,15"/>
-                                        <TextBox x:Name="txtTimeLimit" Text="60" Height="45" FontSize="16" VerticalContentAlignment="Center" Padding="15,0" BorderBrush="{StaticResource BorderLight}">
+                                        <TextBox x:Name="txtTimeLimit" Text="60" Height="45" FontSize="16" VerticalContentAlignment="Center" Padding="15,0" BorderBrush="{StaticResource BorderLight}" TextChanged="OnSettingChanged">
                                             <TextBox.Resources>
                                                 <Style TargetType="Border">
                                                     <Setter Property="CornerRadius" Value="10"/>
@@ -207,7 +207,7 @@
 
                             <!-- Warning Panel -->
                             <StackPanel x:Name="pnlWarning" Visibility="Collapsed" Margin="0,20,0,0">
-                                <Border Background="{StaticResource DangerRed}" Opacity="0.1" CornerRadius="10" Padding="15">
+                                <Border Background="#1AF87171" CornerRadius="10" Padding="15">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="⚠" Foreground="{StaticResource DangerRed}" FontSize="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                         <TextBlock x:Name="txtWarning" Text="Warning message goes here." Foreground="{StaticResource DangerRed}" VerticalAlignment="Center" FontWeight="SemiBold"/>
@@ -248,7 +248,7 @@
                         <Grid Grid.Row="2" Margin="0,30,0,0">
                             <Button x:Name="btnPrev" Content="← PREVIOUS" HorizontalAlignment="Left" Padding="25,12" Background="#F1F5F9" FontWeight="Bold" Cursor="Hand" Click="btnPrev_Click"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button x:Name="btnFlag" Content="⚑ FLAG FOR REVIEW" Background="Transparent" Foreground="{StaticResource WarningOrange}" FontWeight="Bold" BorderThickness="0" Margin="0,0,20,0" Cursor="Hand"/>
+                                <Button x:Name="btnFlag" Content="⚑ FLAG FOR REVIEW" Background="Transparent" Foreground="{StaticResource WarningOrange}" FontWeight="Bold" BorderThickness="0" Margin="0,0,20,0" Cursor="Hand" Click="btnFlag_Click"/>
                                 <Button x:Name="btnSubmit" Content="SUBMIT EXAM" Background="{StaticResource SuccessGreen}" Foreground="White" FontWeight="Bold" Padding="30,12" Cursor="Hand" Click="btnSubmit_Click">
                                     <Button.Resources>
                                         <Style TargetType="Border">

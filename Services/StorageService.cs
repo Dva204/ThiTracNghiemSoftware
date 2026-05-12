@@ -43,9 +43,11 @@ namespace TN.Services
             string categoryPath = Path.Combine(_baseDbPath, category);
             if (!Directory.Exists(categoryPath)) return new List<string>();
             
-            return Directory.GetFiles(categoryPath, "*.docx")
-                            .Select(Path.GetFileName)
-                            .ToList();
+            // Lấy cả file docx và file json (cho các câu hỏi tự soạn)
+            var docxFiles = Directory.GetFiles(categoryPath, "*.docx").Select(Path.GetFileName);
+            var jsonFiles = Directory.GetFiles(categoryPath, "*.json").Select(Path.GetFileName);
+            
+            return docxFiles.Concat(jsonFiles).ToList();
         }
 
         public string ImportFileToCategory(string sourceFilePath, string targetFileName, string category) {

@@ -30,15 +30,32 @@
                             <StackPanel HorizontalAlignment="Center">
                                 <TextBlock Text="📄" FontSize="56" HorizontalAlignment="Center" Margin="0,0,0,10"/>
                                 <TextBlock Text="Select a Word document (.docx)" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center" Margin="0,0,0,15"/>
-                                <Button x:Name="btnSelectFile" Content="CHOOSE FILE" Width="180" Height="45"
-                                        Background="{StaticResource AccentBlue}" Foreground="White" FontWeight="Bold"
-                                        BorderThickness="0" Cursor="Hand" Click="btnSelectFile_Click">
-                                    <Button.Resources>
-                                        <Style TargetType="Border">
-                                            <Setter Property="CornerRadius" Value="12"/>
-                                        </Style>
-                                    </Button.Resources>
-                                </Button>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button x:Name="btnSelectFile" Content="CHOOSE DOCX FILE" Width="180" Height="45" Margin="0,0,10,0"
+                                            Background="{StaticResource AccentBlue}" Foreground="White" FontWeight="Bold"
+                                            BorderThickness="0" Cursor="Hand" Click="btnSelectFile_Click">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="12"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+
+                                    <Grid>
+                                        <Button x:Name="btnOpenEditor" Content="SMART EDITOR" Width="180" Height="45"
+                                                Background="{StaticResource HeaderNavy}" Foreground="White" FontWeight="Bold"
+                                                BorderThickness="0" Cursor="Hand" Click="btnOpenEditor_Click">
+                                            <Button.Resources>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="CornerRadius" Value="12"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+                                        <Border Background="#FFD700" CornerRadius="4" Padding="6,1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-12,-8,0">
+                                            <TextBlock Text="PRO" FontSize="9" FontWeight="Bold" Foreground="Black"/>
+                                        </Border>
+                                    </Grid>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
 
@@ -61,7 +78,7 @@
                                     </TextBox.Resources>
                                 </TextBox>
                                 
-                                <ComboBox x:Name="cboCollection" Height="45" FontSize="14" VerticalContentAlignment="Center" Background="White" BorderBrush="{StaticResource BorderLight}">
+                                <ComboBox x:Name="cboCollection" Height="45" FontSize="14" VerticalContentAlignment="Center" Background="White" BorderBrush="{StaticResource BorderLight}" SelectionChanged="cboCollection_SelectionChanged">
                                     <ComboBox.Resources>
                                         <Style TargetType="Border">
                                             <Setter Property="CornerRadius" Value="10"/>
@@ -91,15 +108,17 @@
                                     </Button.Resources>
                                 </Button>
 
-                                <Button x:Name="btnDelete" Content="🗑️" Width="45" Height="45" 
-                                        Background="#FEE2E2" Foreground="{StaticResource DangerRed}" FontSize="18"
-                                        BorderThickness="0" Cursor="Hand" Click="btnDelete_Click" ToolTip="Xóa bộ đề">
-                                    <Button.Resources>
-                                        <Style TargetType="Border">
-                                            <Setter Property="CornerRadius" Value="10"/>
-                                        </Style>
-                                    </Button.Resources>
-                                </Button>
+                                <Grid>
+                                    <Button x:Name="btnDelete" Content="🗑️" Width="45" Height="45" 
+                                            Background="#FEE2E2" Foreground="{StaticResource DangerRed}" FontSize="18"
+                                            BorderThickness="0" Cursor="Hand" Click="btnDelete_Click" ToolTip="Xóa bộ đề">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="10"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+                                </Grid>
                             </StackPanel>
                         </Grid>
 
@@ -114,6 +133,35 @@
                                 </TextBox.Resources>
                             </TextBox>
                         </StackPanel>
+
+                        <!-- File Management Section (Delete individual files) -->
+                        <Border BorderBrush="{StaticResource BorderLight}" BorderThickness="0,1,0,0" Margin="0,10,0,15" Padding="0,15,0,0">
+                            <StackPanel>
+                                <TextBlock Text="MANAGE FILES IN COLLECTION" FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,10"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ListBox x:Name="lstFiles" Height="120" BorderBrush="{StaticResource BorderLight}" BorderThickness="1">
+                                        <ListBox.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="8"/>
+                                            </Style>
+                                        </ListBox.Resources>
+                                    </ListBox>
+                                    <Button x:Name="btnDeleteFile" Grid.Column="1" Content="DELETE FILE" Width="100" Height="35" Margin="10,0,0,0"
+                                            VerticalAlignment="Top" Background="#FEE2E2" Foreground="{StaticResource DangerRed}" 
+                                            FontWeight="Bold" BorderThickness="0" Cursor="Hand" Click="btnDeleteFile_Click">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="8"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
 
                         <!-- Status Section -->
                         <Border x:Name="pnlStatus" Background="#F1F5F9" CornerRadius="14" Padding="15" Margin="0,10,0,0">

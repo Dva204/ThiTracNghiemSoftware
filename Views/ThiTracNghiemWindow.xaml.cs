@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -67,7 +68,7 @@ namespace TN
                     var banks = _storageService.GetBanksByCategory(lastCategory);
                     if (banks.Contains(lastFile))
                     {
-                        cboQuestionBanks.SelectedItem = lastFile;
+                        cboQuestionBanks.SelectedValue = lastFile;
                     }
                 }
             }
@@ -82,22 +83,45 @@ namespace TN
             if (cboCategories.SelectedItem is string category)
             {
                 var banks = _storageService.GetBanksByCategory(category);
-                cboQuestionBanks.ItemsSource = banks;
-                if (banks.Count > 0)
+                var displayList = new List<BankDisplayItem>();
+
+                foreach (var file in banks)
                 {
-                    cboQuestionBanks.SelectedIndex = 0;
+                    string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Storage", "QuestionBanks", category, file);
+                    string displayName = file;
+
+                    if (file.EndsWith(".json"))
+                    {
+                        try {
+                            string json = File.ReadAllText(path);
+                            try {
+                                var bankData = JsonSerializer.Deserialize<ExamBank>(json);
+                                displayName = "★ " + (bankData?.Title ?? file);
+                            } catch {
+                                // Fallback cho file cũ
+                                displayName = "★ " + Path.GetFileNameWithoutExtension(file);
+                            }
+                        } catch { displayName = "⚠ " + file; }
+                    }
+                    else if (file.EndsWith(".docx"))
+                    {
+                        displayName = "📄 " + Path.GetFileNameWithoutExtension(file);
+                    }
+
+                    displayList.Add(new BankDisplayItem { DisplayName = displayName, FileName = file });
                 }
-                else
-                {
-                    _allQuestions.Clear();
-                    UpdateCountLabels();
-                }
+
+                cboQuestionBanks.ItemsSource = displayList;
+                cboQuestionBanks.DisplayMemberPath = "DisplayName";
+                cboQuestionBanks.SelectedValuePath = "FileName";
+
+                if (displayList.Count > 0) cboQuestionBanks.SelectedIndex = 0;
             }
         }
 
         public void cboQuestionBanks_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cboCategories.SelectedItem is string category && cboQuestionBanks.SelectedItem is string selectedFile)
+            if (cboCategories.SelectedItem is string category && cboQuestionBanks.SelectedValue is string selectedFile)
             {
                 // Đánh dấu file này là file đang active
                 _storageService.SetActiveBank(category, selectedFile);
@@ -106,14 +130,43 @@ namespace TN
                 string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Storage", "QuestionBanks", category, selectedFile);
                 try
                 {
-                    _allQuestions = _parserService.LoadQuestionsFromDocx(path);
-                    ValidateSetup(); // Cập nhật lại thông báo số câu tối đa
+                    if (selectedFile.ToLower().EndsWith(".json"))
+                    {
+                        string json = File.ReadAllText(path);
+                        try {
+                            var bankData = JsonSerializer.Deserialize<ExamBank>(json);
+                            _allQuestions = bankData?.Questions ?? new List<Question>();
+                        } catch {
+                            // Fallback cho file cũ
+                            _allQuestions = JsonSerializer.Deserialize<List<Question>>(json) ?? new List<Question>();
+                        }
+                    }
+                    else
+                    {
+                        _allQuestions = _parserService.LoadQuestionsFromDocx(path);
+                        
+                        // GIỚI HẠN BẢN FREE: Chỉ đọc tối đa 60 câu từ file Word
+                        if (!_licenseService.IsPremiumUser() && _allQuestions.Count > 60)
+                        {
+                            _allQuestions = _allQuestions.Take(60).ToList();
+                            MessageBox.Show("Phiên bản FREE chỉ hỗ trợ đọc tối đa 60 câu hỏi từ file Word.\n\nHãy nâng cấp bản quyền PREMIUM để mở khóa giới hạn này!", 
+                                            "Giới hạn phiên bản FREE", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    }
+                    ValidateSetup(); 
+                    if (txtRangeInfo != null) txtRangeInfo.Text = $"Available: {_allQuestions.Count}";
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Lỗi tải file: " + ex.Message);
                 }
             }
+        }
+
+        public class BankDisplayItem
+        {
+            public string DisplayName { get; set; }
+            public string FileName { get; set; }
         }
 
         //         CẬP NHẬT NHÃN KHO CÂU
@@ -283,11 +336,11 @@ namespace TN
             txtCurrentQIndex.Text = $"QUESTION {index + 1:D2}";
             txtQuestion.Text = q.Text;
 
-            // Gán đáp án vào Tag để RadioButton dùng
-            rbA.Tag = q.Options.Count > 0 ? q.Options[0] : "";
-            rbB.Tag = q.Options.Count > 1 ? q.Options[1] : "";
-            rbC.Tag = q.Options.Count > 2 ? q.Options[2] : "";
-            rbD.Tag = q.Options.Count > 3 ? q.Options[3] : "";
+            // Gán đáp án vào Content để hiển thị
+            rbA.Content = q.Options.Count > 0 ? q.Options[0] : "";
+            rbB.Content = q.Options.Count > 1 ? q.Options[1] : "";
+            rbC.Content = q.Options.Count > 2 ? q.Options[2] : "";
+            rbD.Content = q.Options.Count > 3 ? q.Options[3] : "";
 
             // Reset chọn trước khi set
             rbA.IsChecked = false;
@@ -327,6 +380,22 @@ namespace TN
             // Nút prev
             btnPrev.IsEnabled = index > 0;
             btnPrev.Opacity = index > 0 ? 1.0 : 0.4;
+
+            UpdateFlagButtonUI();
+        }
+
+        private void UpdateFlagButtonUI()
+        {
+            if (_examService.FlaggedQuestions.Contains(_examService.CurrentIndex))
+            {
+                btnFlag.Content = "🚩 FLAGGED";
+                btnFlag.Foreground = (SolidColorBrush)FindResource("DangerRed");
+            }
+            else
+            {
+                btnFlag.Content = "⚑ FLAG FOR REVIEW";
+                btnFlag.Foreground = (SolidColorBrush)FindResource("WarningOrange");
+            }
         }
 
         // ═══════════════════════════════════════
@@ -413,11 +482,18 @@ namespace TN
 
                 bool isCurrent = i == index;
                 bool isAnswered = _examService.UserAnswers.ContainsKey(i);
+                bool isFlagged = _examService.FlaggedQuestions.Contains(i);
 
                 if (isCurrent)
                 {
                     border.Background = (SolidColorBrush)FindResource("AccentBlue");
                     btn.Foreground = Brushes.White;
+                }
+                else if (isFlagged)
+                {
+                    border.Background = (SolidColorBrush)FindResource("WarningOrange");
+                    btn.Foreground = Brushes.White;
+                    // Nếu đã trả lời mà có cờ thì thêm gạch chân hoặc gì đó? Tạm thời chỉ màu cam.
                 }
                 else if (isAnswered)
                 {
@@ -458,6 +534,18 @@ namespace TN
                     "Nộp bài", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (r == MessageBoxResult.Yes) ShowResult();
             }
+        }
+
+        private void btnFlag_Click(object sender, RoutedEventArgs e)
+        {
+            int index = _examService.CurrentIndex;
+            if (_examService.FlaggedQuestions.Contains(index))
+                _examService.FlaggedQuestions.Remove(index);
+            else
+                _examService.FlaggedQuestions.Add(index);
+
+            UpdateFlagButtonUI();
+            HighlightNavButton(_examService.CurrentIndex);
         }
 
         // ═══════════════════════════════════════

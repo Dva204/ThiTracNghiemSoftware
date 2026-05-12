@@ -1,0 +1,144 @@
+<Window x:Class="TN.Views.GuideWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="User Guide - Premium Learning Platform" Height="750" Width="900"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True"
+        Background="Transparent">
+    
+    <Border Background="#F4F7FB" CornerRadius="24" BorderBrush="{StaticResource BorderLight}" BorderThickness="1">
+        <Grid>
+            <!-- Header -->
+            <Border Background="{StaticResource HeaderNavy}" Height="120" VerticalAlignment="Top" CornerRadius="24,24,0,0">
+                <Grid>
+                    <TextBlock Text="USER GUIDE &amp; DOCUMENTATION" FontSize="14" Foreground="{StaticResource AccentCyan}" FontWeight="Bold" Margin="40,40,0,0" VerticalAlignment="Top"/>
+                    <TextBlock Text="Learn how to master your exam preparation" FontSize="20" Foreground="White" FontWeight="SemiBold" Margin="40,65,0,0" VerticalAlignment="Top"/>
+                    <Button x:Name="btnClose" Content="✕" 
+                            HorizontalAlignment="Right" VerticalAlignment="Top"
+                            Width="40" Height="40" Margin="0,20,30,0"
+                            Foreground="White" FontSize="18" Background="Transparent" BorderThickness="0" 
+                            Cursor="Hand" Click="btnClose_Click"/>
+                </Grid>
+            </Border>
+
+            <!-- Content Area -->
+            <Border Margin="30,130,30,30" Background="White" CornerRadius="18" Padding="30">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <!-- Section 1: Format -->
+                        <Border Background="#F1F5F9" CornerRadius="12" Padding="20" Margin="0,0,0,25">
+                            <StackPanel>
+                                <TextBlock Text="1. CÁCH FORMAT ĐỀ (WORD DOCUMENT)" FontSize="18" FontWeight="Bold" Foreground="{StaticResource HeaderNavy}" Margin="0,0,0,10"/>
+                                <TextBlock Text="Để phần mềm nhận diện đúng câu hỏi, bạn cần format file .docx theo quy tắc sau:" TextWrapping="Wrap" Foreground="{StaticResource TextPrimary}" Margin="0,0,0,10"/>
+                                <Border Background="White" BorderBrush="{StaticResource BorderLight}" BorderThickness="1" Padding="15" CornerRadius="8">
+                                    <TextBlock FontFamily="Consolas" FontSize="13" LineHeight="20">
+                                        Câu hỏi: Nội dung câu hỏi kết thúc bằng dấu <Run FontWeight="Bold" Foreground="Red">#</Run><LineBreak/>
+                                        Đáp án 1: a. Nội dung kết thúc bằng dấu <Run FontWeight="Bold" Foreground="Red">#</Run><LineBreak/>
+                                        Đáp án 2: b. Nội dung kết thúc bằng dấu <Run FontWeight="Bold" Foreground="Red">#</Run><LineBreak/>
+                                        Đáp án 3: c. Nội dung kết thúc bằng dấu <Run FontWeight="Bold" Foreground="Red">#</Run><LineBreak/>
+                                        Đáp án 4: d. Nội dung kết thúc bằng dấu <Run FontWeight="Bold" Foreground="Red">#</Run><LineBreak/>
+                                        Số thứ tự đáp án đúng (1-4) kết thúc bằng dấu <Run FontWeight="Bold" Foreground="Red">#</Run><LineBreak/>
+                                        <Run Foreground="Gray">// Có thể thêm $DỄ#, $TRUNG BÌNH# hoặc $KHÓ# ở trên câu hỏi</Run>
+                                    </TextBlock>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Section 2: Management -->
+                        <StackPanel Margin="0,0,0,25">
+                            <TextBlock Text="2. QUẢN LÝ BỘ SƯU TẬP &amp; FILE" FontSize="18" FontWeight="Bold" Foreground="{StaticResource HeaderNavy}" Margin="0,0,0,10"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                    <Border Background="#F0F9FF" Padding="15" CornerRadius="10">
+                                        <StackPanel>
+                                            <TextBlock Text="BẢN FREE (MIỄN PHÍ)" FontWeight="Bold" Foreground="{StaticResource AccentBlue}" Margin="0,0,0,5"/>
+                                            <TextBlock Text="• Tối đa 3 bộ sưu tập." TextWrapping="Wrap"/>
+                                            <TextBlock Text="• Tối đa 5 file trong mỗi bộ sưu tập." TextWrapping="Wrap"/>
+                                            <TextBlock Text="• Giới hạn 60 câu mỗi đề thi." TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                    <Border Background="#FDF2F2" Padding="15" CornerRadius="10" BorderBrush="#FECACA" BorderThickness="1">
+                                        <StackPanel>
+                                            <TextBlock Text="BẢN PREMIUM (PRO)" FontWeight="Bold" Foreground="{StaticResource DangerRed}" Margin="0,0,0,5"/>
+                                            <TextBlock Text="• Không giới hạn bộ sưu tập &amp; file." TextWrapping="Wrap"/>
+                                            <TextBlock Text="• Truy cập Smart Question Builder." TextWrapping="Wrap"/>
+                                            <TextBlock Text="• Không giới hạn số câu mỗi đề thi." TextWrapping="Wrap"/>
+                                            <TextBlock Text="• Quyền xóa bộ đề &amp; chỉnh sửa vĩnh viễn." TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- Section 3: Smart Practice -->
+                        <Border Background="#FFF7ED" CornerRadius="12" Padding="20" Margin="0,0,0,25">
+                            <StackPanel>
+                                <TextBlock Text="3. CÁC TÍNH NĂNG ĐẶC BIỆT" FontSize="18" FontWeight="Bold" Foreground="#9A3412" Margin="0,0,0,10"/>
+                                <TextBlock Text="• Smart Practice (Premium): Tự động lọc ra những câu bạn đã làm sai để luyện tập lại." TextWrapping="Wrap" Margin="0,0,0,5"/>
+                                <TextBlock Text="• Auto-Save: Hệ thống tự động lưu trạng thái làm bài nếu bạn lỡ tay đóng phần mềm." TextWrapping="Wrap" Margin="0,0,0,5"/>
+                                <TextBlock Text="• Statistics: Theo dõi biểu đồ tiến độ và độ chính xác của bạn qua Dashboard." TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Section 4: Social Connect -->
+                        <Border Background="#F8FAFC" CornerRadius="12" Padding="20">
+                            <StackPanel>
+                                <TextBlock Text="4. CONNECT WITH DEVELOPER" FontSize="18" FontWeight="Bold" Foreground="{StaticResource HeaderNavy}" Margin="0,0,0,15" HorizontalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button x:Name="btnFacebook" Content="FACEBOOK" Margin="0,0,15,0" Width="100" Height="35"
+                                            Background="#1877F2" Foreground="White" FontWeight="Bold" Cursor="Hand" Click="Social_Click" Tag="https://www.facebook.com/do.van.an.436067/">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="8"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+                                    <Button x:Name="btnZalo" Content="ZALO" Margin="0,0,15,0" Width="100" Height="35"
+                                            Background="#0068FF" Foreground="White" FontWeight="Bold" Cursor="Hand" Click="Social_Click" Tag="https://zalo.me/0386137558">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="8"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+                                    <Button x:Name="btnGithub" Content="GITHUB" Width="100" Height="35"
+                                            Background="#24292F" Foreground="White" FontWeight="Bold" Cursor="Hand" Click="Social_Click" Tag="https://github.com/Dva204">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="8"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+                                </StackPanel>
+                                <Button Content="Email: dvagroup.work@gmail.com" Margin="0,15,0,0" 
+                                        Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextSecondary}"
+                                        HorizontalAlignment="Center" Cursor="Hand" Click="Social_Click" Tag="mailto:dvagroup.work@gmail.com">
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="0"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                            </StackPanel>
+                        </Border>
+
+                        <Button Content="I UNDERSTAND, LET'S START!" Margin="0,30,0,0" Height="50"
+                                Background="{StaticResource AccentBlue}" Foreground="White" FontWeight="Bold"
+                                BorderThickness="0" Cursor="Hand" Click="btnClose_Click">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="12"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

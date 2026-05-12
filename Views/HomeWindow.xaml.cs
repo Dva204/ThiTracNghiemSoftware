@@ -73,6 +73,13 @@ namespace TN.Views
         // Chuyển sang cửa sổ Thống Kê
         private void BtnStatistics_Click(object sender, RoutedEventArgs e)
         {
+            if (!_licenseService.IsPremiumUser())
+            {
+                MessageBox.Show("Tính năng 'Thống kê & Phân tích' chỉ dành cho bản PREMIUM.\nHãy nâng cấp để theo dõi tiến độ của bạn!", 
+                                "Tính năng Premium", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
             var statWindow = new StatisticsWindow();
             statWindow.Show();
             this.Close();
@@ -111,6 +118,12 @@ namespace TN.Views
                 MessageBox.Show("License Key không hợp lệ. Vui lòng kiểm tra lại.", "Lỗi", 
                                 MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void BtnGuide_Click(object sender, RoutedEventArgs e)
+        {
+            var guide = new GuideWindow();
+            guide.ShowDialog();
         }
     }
 }

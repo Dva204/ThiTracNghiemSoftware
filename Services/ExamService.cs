@@ -21,6 +21,8 @@ namespace TN.Services
         public List<Question> ExamQuestions{get; set;} = new();
         //Đáp án của người dùng: index → 1/2/3/4
         public Dictionary<int, int> UserAnswers{get; set;} = new();
+        //Danh sách câu hỏi đánh dấu để xem lại
+        public HashSet<int> FlaggedQuestions { get; set; } = new();
         //Vị trí câu hỏi hiện tại
         public int CurrentIndex { get; set; } = 0;
 
@@ -34,6 +36,7 @@ namespace TN.Services
             var rng = new Random();
             ExamQuestions = bank.OrderBy(_ => rng.Next()).Take(targetCount).ToList();
             UserAnswers.Clear();
+            FlaggedQuestions.Clear();
             CurrentIndex = 0;
             CurrentMode = mode;
         }
@@ -55,6 +58,7 @@ namespace TN.Services
             {
                 ExamQuestions = this.ExamQuestions,
                 UserAnswers = this.UserAnswers,
+                FlaggedQuestions = this.FlaggedQuestions,
                 CurrentIndex = this.CurrentIndex,
                 CurrentMode = this.CurrentMode.ToString(),
                 RemainingSeconds = remainingSeconds

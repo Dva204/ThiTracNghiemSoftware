@@ -58,6 +58,20 @@ namespace TN.Views
             btnAddCategory.Foreground = _isAddingNew ? Brushes.OrangeRed : new SolidColorBrush(Color.FromRgb(0, 212, 255));
         }
 
+        private void btnOpenEditor_Click(object sender, RoutedEventArgs e)
+        {
+            if (!_licenseService.IsPremiumUser())
+            {
+                MessageBox.Show("Trình soạn thảo câu hỏi trực tiếp là tính năng PREMIUM.\nHãy nâng cấp để tự tạo bộ đề của riêng bạn!", 
+                                "Tính năng Premium", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var editor = new EditorWindow();
+            editor.Show();
+            this.Close();
+        }
+
         private void btnSelectFile_Click(object sender, RoutedEventArgs e){
             string category = _isAddingNew ? txtNewCategory.Text.Trim() : cboCollection.Text;
 
@@ -107,10 +121,17 @@ namespace TN.Views
 
                     //Đọc câu hỏi từ file vừa lưu
                     List<Question> questions = _parserService.LoadQuestionsFromDocx(savedPath);
+                    int actualCount = questions.Count;
+                    string limitNote = "";
+
+                    if (!isPremium && actualCount > 60)
+                    {
+                        limitNote = "\n⚠ (Giới hạn Free: Chỉ sử dụng được 60 câu)";
+                    }
 
                     txtStatus.Text =
                         $"Đã nhập thành công vào bộ đề: [{category}]\n" +
-                        $"✔ Số câu hợp lệ: {questions.Count} câu\n" +
+                        $"✔ Số câu hợp lệ: {actualCount} câu {limitNote}\n" +
                         $"File lưu: {fileName}";
 
                     txtStatus.Foreground = new SolidColorBrush(Color.FromRgb(0, 255, 136));
@@ -183,6 +204,13 @@ namespace TN.Views
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            if (!_licenseService.IsPremiumUser())
+            {
+                MessageBox.Show("Xóa bộ đề là tính năng PREMIUM.\nHãy nâng cấp để quản lý kho câu hỏi chuyên nghiệp hơn!", 
+                                "Tính năng Premium", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
             if (cboCollection.SelectedItem is string category)
             {
                 var result = MessageBox.Show(
@@ -195,6 +223,48 @@ namespace TN.Views
                     LoadCategories();
                     MessageBox.Show("Đã xóa bộ đề thành công.");
                 }
+            }
+        }
+
+        private void cboCollection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadFiles();
+        }
+
+        private void LoadFiles()
+        {
+            if (cboCollection.SelectedItem is string category)
+            {
+                var files = _storageService.GetBanksByCategory(category);
+                lstFiles.ItemsSource = files;
+            }
+            else
+            {
+                lstFiles.ItemsSource = null;
+            }
+        }
+
+        private void btnDeleteFile_Click(object sender, RoutedEventArgs e)
+        {
+            if (cboCollection.SelectedItem is string category && lstFiles.SelectedItem is string fileName)
+            {
+                var result = MessageBox.Show($"Bạn có chắc chắn muốn xóa file '{fileName}' khỏi bộ đề '{category}'?", 
+                    "Xác nhận xóa file", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Storage", "QuestionBanks", category, fileName);
+                    if (File.Exists(path))
+                    {
+                        File.Delete(path);
+                        LoadFiles();
+                        MessageBox.Show("Đã xóa file thành công.");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn một file để xóa!");
             }
         }
     }
